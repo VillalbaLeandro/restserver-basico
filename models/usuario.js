@@ -1,5 +1,5 @@
 
-const { Schema, model   } = require('mongoose')
+const { Schema, model } = require('mongoose')
 
 
 const UsuarioSchema = Schema({
@@ -33,6 +33,13 @@ const UsuarioSchema = Schema({
         default: false
     }
 })
+
+UsuarioSchema.methods.toJSON = function () {
+    // Desestructura el objeto this (el objeto de usuario actual)
+    const { __v, password, ...usuario } = this.toObject();
+    // Retorna un nuevo objeto JSON que excluye los campos __v y password
+    return usuario;
+}
 
 
 module.exports = model('Usuario', UsuarioSchema);
