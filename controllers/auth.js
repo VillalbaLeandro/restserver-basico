@@ -6,7 +6,8 @@ const { generarJWT } = require('../helpers/generar-jwt')
 
 const login = async (req, res = response) => {
 
-    const { correo, password } = req.body
+    const { _id, ...resto } = req.body
+    const {correo, password} = resto
 
     try {
         // Verificar si el usuario existe 
