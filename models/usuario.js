@@ -36,7 +36,8 @@ const UsuarioSchema = Schema({
 
 UsuarioSchema.methods.toJSON = function () {
     // Desestructura el objeto this (el objeto de usuario actual)
-    const { __v, password, ...usuario } = this.toObject();
+    const { __v, password, _id, ...usuario } = this.toObject();
+    usuario.uid = _id;
     // Retorna un nuevo objeto JSON que excluye los campos __v y password
     return usuario;
 }
