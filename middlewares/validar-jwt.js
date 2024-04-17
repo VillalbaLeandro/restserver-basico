@@ -16,7 +16,7 @@ const validarJWT = async (req, res = response, next) => {
 
     // Verificar si es valido 
     try {
-        const { uid } = jwt.verify(token, process.env.SECRETORPUBLICKEY) //Si esta instruccion da error lanza un throw error! 
+        const { uid } = jwt.verify(token, process.env.SECRET_KEY) //Si esta instruccion da error lanza un throw error! 
 
 
         const usuario = await Usuario.findById(uid)
