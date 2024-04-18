@@ -18,9 +18,10 @@ const { usuariosGet,
 const rolUsuario = require('../utils/roles');
 
 const router = Router();
-
+// -----Traer todos los usuarios - en los params key values limite = 5 y desde = 0  <--- por defecto   ----------------------------------------------------
 router.get('/', usuariosGet)
 
+// -------Actualizar usuario por body-------------------------------------------------------------------------------------------------------------------------------
 router.put('/:id', [
     check('id', 'No es un id válido').isMongoId()
         .custom((id) => existeUsuarioPorId(id))
@@ -29,7 +30,7 @@ router.put('/:id', [
     validarCampos
 ], usuariosPut)
 
-
+// ---------crear usuario por body--------------------------------------------------------------------------------------------------------------------------
 router.post('/', [
     check('nombre', 'El nombre es requerido')
         .notEmpty()
@@ -37,6 +38,7 @@ router.post('/', [
         .withMessage('El nombre solo debe contener letras'),
     check('password', 'La constraseña es requerida')
         .notEmpty(),
+    //Esto es el regex para la validacion de contraseñas mas seguras
     // .matches(regex.password)
     // .withMessage('La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número, un carácter especial y tener al menos 8 caracteres de longitud'),
     check('correo', 'El correo es requerido')
@@ -49,8 +51,7 @@ router.post('/', [
     validarCampos
 ], usuariosPost)
 
-
-
+// -------Eliminar por id con token auth de ususario logeado ----------------------------------------------------------------------------------
 router.delete('/:id', [
     validarJWT,
     // adminRole,
@@ -60,6 +61,7 @@ router.delete('/:id', [
     validarCampos
 ], usuariosDelete);
 
-router.patch('/', usuariosPatch)
+// -----------------------------------------------------------------------------------------------------------------------------------------------------------
+// router.patch('/', usuariosPatch)
 
 module.exports = router;

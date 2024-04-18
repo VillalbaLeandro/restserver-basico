@@ -29,7 +29,7 @@ const tieneRole = (...roles) => {
         }
         if(!roles.includes(req.usuario.rol)) {
             return res.status(401).json({
-                msg: 'El rol del usuario no le permite realizar esta accion'
+                msg: 'Necesita ser rol Administador o Usuario para realizar esta acción'
             })
         }
         next()
