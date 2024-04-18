@@ -88,11 +88,11 @@ const usuariosDelete = async (req, res) => {
 
 /// -----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// const usuariosPatch = (req, res) => {
-//     res.json({
-//         msg: 'Patch API'
-//     })
-// }
+const usuariosPatch = (req, res) => {
+    res.json({
+        msg: 'Patch API'
+    })
+}
 
 module.exports = {
     usuariosGet,
