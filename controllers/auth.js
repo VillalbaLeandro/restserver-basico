@@ -42,7 +42,7 @@ const login = async (req, res = response) => {
     } catch (error) {
         console.log(error);
         return res.json({
-            msg: 'Hanle con el administrador'
+            msg: 'Hable con el administrador'
         })
     }
 
