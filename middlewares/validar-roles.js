@@ -1,4 +1,5 @@
 const { response } = require("express");
+const rolUsuario = require("../utils/roles");
 
 const adminRole = (req, res = response, next)=>{
 
@@ -10,7 +11,7 @@ const adminRole = (req, res = response, next)=>{
 
     const {rol, nombre} = req.usuario
 
-    if(rol !== 'ADMIN_ROLE'){
+    if(rol !== rolUsuario.admin){
         return res.status(401).json({
             msg: `${nombre} no es administrador - no puede hacer esto`
         })
@@ -28,7 +29,7 @@ const tieneRole = (...roles) => {
         }
         if(!roles.includes(req.usuario.rol)) {
             return res.status(401).json({
-                msg: 'El rol del usuario no le permite realizar esta accion'
+                msg: 'Necesita ser rol Administador o Usuario para realizar esta acción'
             })
         }
         next()

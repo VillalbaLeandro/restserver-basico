@@ -39,7 +39,8 @@ const usuariosPost = async (req, res) => {
     // Guardar en BD
     await usuario.save();
     res.json({
-        usuario
+        usuario,
+        msg: 'Usuario creado con éxito'
     })
 }
 
@@ -49,6 +50,11 @@ const usuariosPut = async (req, res) => {
     //excluimos los atributos que no queremos operar
     const { _id, password, google, ...resto } = req.body
 
+    if (!id) {
+        return res.status(401).json({
+            msg: 'El id no existe'
+        })
+    }
     //Validar contra base de datos
     if (password) {
         // Encriptar la contraseña
@@ -59,7 +65,10 @@ const usuariosPut = async (req, res) => {
     const usuario = await Usuario.findByIdAndUpdate(id, resto)
 
     // retornamos los datos seleccionados al usuario 
-    res.json(usuario)
+    res.json({
+        usuario,
+        msg: 'Usuario actualizado con éxito'
+    })
 }
 
 /// -----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -71,7 +80,10 @@ const usuariosDelete = async (req, res) => {
     
     const usuario = await Usuario.findByIdAndUpdate(id, { estado: false })
     const usuarioAutenticado = req.usuario 
-    res.json(usuario) 
+    res.json({
+        usuario,
+        msg: 'Usuario deshabilitado con éxito'
+    }) 
 }
 
 /// -----------------------------------------------------------------------------------------------------------------------------------------------------------

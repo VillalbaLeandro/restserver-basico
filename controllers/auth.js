@@ -14,7 +14,7 @@ const login = async (req, res = response) => {
         const usuario = await Usuario.findOne({ correo });
         if (!usuario) {
             return res.status(400).json({
-                msg: 'Usuario / password no son correctos - correo'
+                msg: 'El usuario no esta registrado'
             })
         }
         // El usuario esta activo? 
@@ -28,7 +28,7 @@ const login = async (req, res = response) => {
         const validPassword = bcryptjs.compareSync(password, usuario.password)
         if (!validPassword) {
             return res.status(400).json({
-                msg: 'Usuario / password no son correctos - password'
+                msg: 'Usuario o contraseña incorrectos'
             })
         }
 
@@ -42,7 +42,7 @@ const login = async (req, res = response) => {
     } catch (error) {
         console.log(error);
         return res.json({
-            msg: 'Hanle con el administrador'
+            msg: 'Hable con el administrador'
         })
     }
 
