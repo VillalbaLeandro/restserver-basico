@@ -62,7 +62,7 @@ const usuariosPut = async (req, res) => {
         resto.password = bcryptjs.hashSync(password, salt) //se llama a password que es la propiedad que esta en el Modelo Usuario. 
     }
     // busca y actualiza el usuario por su id(1er parametro) con lo que le llega del rest operator
-    const usuario = await Usuario.findByIdAndUpdate(id, resto)
+    const usuario = await Usuario.findByIdAndUpdate(id, resto, { new: true })
 
     // retornamos los datos seleccionados al usuario 
     res.json({
@@ -78,11 +78,23 @@ const usuariosDelete = async (req, res) => {
 
     // const usuario = await Usuario.findByIdAndDelete(id);
     
-    const usuario = await Usuario.findByIdAndUpdate(id, { estado: false })
-    const usuarioAutenticado = req.usuario 
+    const usuario = await Usuario.findByIdAndUpdate(id, { estado: false }, { new: true })
     res.json({
         usuario,
         msg: 'Usuario deshabilitado con éxito'
+    }) 
+}
+
+/// -----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+const usuariosHabilitar = async (req, res) => {
+    const { id } = req.params;
+
+    
+    const usuario = await Usuario.findByIdAndUpdate(id, { estado: true }, { new: true })
+    res.json({
+        usuario,
+        msg: 'Usuario habilitado con éxito'
     }) 
 }
 
@@ -99,5 +111,6 @@ module.exports = {
     usuariosPost,
     usuariosPut,
     usuariosDelete,
-    usuariosPatch
+    usuariosPatch,
+    usuariosHabilitar
 }

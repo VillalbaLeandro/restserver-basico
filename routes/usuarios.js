@@ -14,7 +14,8 @@ const { usuariosGet,
     usuariosDelete,
     usuariosPut,
     usuariosPost,
-    usuariosPatch } = require('../controllers/usuarios');
+    usuariosPatch, 
+    usuariosHabilitar} = require('../controllers/usuarios');
 const rolUsuario = require('../utils/roles');
 
 const router = Router();
@@ -61,6 +62,16 @@ router.delete('/:id', [
     check('id', 'El id no existe').custom((id) => existeUsuarioPorId(id)),
     validarCampos
 ], usuariosDelete);
+
+// -------Habilitar por id con token auth de ususario logeado ----------------------------------------------------------------------------------
+router.put('/habilitar/:id', [
+    validarJWT,
+    // adminRole,
+    tieneRole(rolUsuario.admin, rolUsuario.user),
+    check('id', 'No es un id válido').isMongoId(),
+    check('id', 'El id no existe').custom((id) => existeUsuarioPorId(id)),
+    validarCampos 
+], usuariosHabilitar);
 
 // -----------------------------------------------------------------------------------------------------------------------------------------------------------
 router.patch('/', usuariosPatch)
