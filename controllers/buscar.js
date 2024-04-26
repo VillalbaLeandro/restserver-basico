@@ -5,7 +5,8 @@ const coleccionesPermitidas = [
     'usuarios',
     'categorias',
     'productos',
-    'roles'
+    'roles',
+    'productosPorCategoria'
 ]
 
 const buscarUsuarios = async (termino = '', res = response) => {
@@ -31,27 +32,15 @@ const buscarUsuarios = async (termino = '', res = response) => {
         results: usuarios
     });
 }
-const buscarCategorias = async (termino = '', res = response) => {
+const buscarProductosPorCategorias = async (termino = '', res = response) => {
     const esMongoID = ObjectId.isValid(termino)
     if (esMongoID) {
-        const categoria = await Categoria.findById(termino)
-            .populate('producto', 'nombre')
-            .populate('usuario', 'nombre')
+        const productos = await Producto.find(
+            { categoria: termino }).populate('categoria', 'nombre')
         return res.json({
-            results: (categoria) ? [categoria] : []
-        })
+            results: (productos) ? [productos] : []
+        });
     }
-    const regex = new RegExp(termino, 'i');
-    const categorias = await Categoria.find(
-        { nombre: regex, estado: true })
-        .populate('producto', 'nombre')
-        .populate('usuario', 'nombre')
-    const countResults = await Categoria.countDocuments(
-        { nombre: regex, estado: true })
-    res.json({
-        countResults,
-        results: categorias
-    });
 }
 const buscarProductos = async (termino = '', res = response) => {
     const esMongoID = ObjectId.isValid(termino)
@@ -134,6 +123,9 @@ const buscar = (req, res = response) => {
         case 'productos':
             return buscarProductos(termino, res)
             break;
+        case 'productosPorCategoria':
+            return buscarProductosPorCategorias(termino, res)
+            break;
 
         default:
             res.status(500).json({
@@ -142,10 +134,6 @@ const buscar = (req, res = response) => {
             break;
     }
 
-    res.json({
-        coleccion,
-        termino
-    })
 }
 
 module.exports = {
